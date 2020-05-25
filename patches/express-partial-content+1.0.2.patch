@@ -1,0 +1,51 @@
+diff --git a/node_modules/express-partial-content/dist/createPartialContentHandler.js b/node_modules/express-partial-content/dist/createPartialContentHandler.js
+index 96a7f8d..52f3c53 100644
+--- a/node_modules/express-partial-content/dist/createPartialContentHandler.js
++++ b/node_modules/express-partial-content/dist/createPartialContentHandler.js
+@@ -40,21 +40,32 @@ function createPartialContentHandler(contentProvider, logger) {
+                 }
+                 return res.sendStatus(500);
+             }
++           
+             utils_1.setContentTypeHeader(mimeType, res);
+             utils_1.setContentDispositionHeader(fileName, res);
++            utils_1.setContentRangeHeader(null, totalSize, res);
+             utils_1.setAcceptRangesHeader(res);
++
+             // If range is not specified, or the file is empty, return the full stream
+             if (range === null) {
+                 logger.debug("createPartialContentHandler: No range found, returning full content.");
+-                utils_1.setContentLengthHeader(totalSize, res);
++                utils_1.setContentLengthHeader(totalSize-1, res);
+                 return getStream().pipe(res);
+             }
++            
+             utils_1.setContentRangeHeader(range, totalSize, res);
+             let { start, end } = range;
+-            utils_1.setContentLengthHeader(start === end ? 0 : end - start + 1, res);
++        //    utils_1.setContentLengthHeader(start === end ? 0 : end - start  , res);
+             utils_1.setCacheControlHeaderNoCache(res);
++            // res.setHeader('message-length', end-start)
++     
++            // console.log("reqest header", req.rawHeaders);
++            console.log("headers", res.getHeaders());
++   
+             // Return 206 Partial Content status
+             logger.debug("createPartialContentHandler: Returning partial content for range: ", JSON.stringify(range));
++
++
+             res.status(206);
+             return getStream(range).pipe(res);
+         });
+diff --git a/node_modules/express-partial-content/dist/utils.js b/node_modules/express-partial-content/dist/utils.js
+index 4d50dc5..a7ed0f2 100644
+--- a/node_modules/express-partial-content/dist/utils.js
++++ b/node_modules/express-partial-content/dist/utils.js
+@@ -9,4 +9,4 @@ exports.setAcceptRangesHeader = exports.setHeader.bind(null, "Accept-Ranges", "b
+ exports.setContentRangeHeader = (range, size, res) => exports.setHeader("Content-Range", `bytes ${range ? `${range.start}-${range.end}` : "*"}/${size}`, res);
+ exports.setContentDispositionHeader = (fileName, res) => exports.setHeader("Content-Disposition", `attachment; filename="${fileName}"`, res);
+ exports.setCacheControlHeaderNoCache = exports.setHeader.bind(null, "Cache-Control", "no-cache");
+-//# sourceMappingURL=utils.js.map
+\ No newline at end of file
++//# sourceMappingURL=utils.js.mapf
+\ No newline at end of file

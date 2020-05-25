@@ -1,5 +1,4 @@
 require("dotenv").config();
-const env = process.env.NODE_ENV;
 const { spawn } = require('child_process');
 const fetch = require("node-fetch")
 const fs = require('fs');
@@ -11,7 +10,7 @@ const { connection: dbConnection } = require("./db/utils")
 
 const socketIo = require('socket.io');
 
-const cert = (env === 'production') ? process.env.PUBLIC_KEY : fs.readFileSync('public.pem');
+const cert =  process.env.PUBLIC_KEY || fs.readFileSync('public.pem');
 
 //console.log(cert.toString());
 

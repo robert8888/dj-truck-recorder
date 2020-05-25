@@ -13,7 +13,7 @@ const socketIo = require('socket.io');
 
 const cert = (env === 'production') ? process.env.PUBLIC_KEY : fs.readFileSync('public.pem');
 
-console.log(cert.toString());
+//console.log(cert.toString());
 
 function create(server){
     const io = socketIo(server);

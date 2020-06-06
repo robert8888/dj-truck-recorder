@@ -4,14 +4,14 @@ require("dotenv").config();
 const cors = require('cors')
 const app = require('express')();
 const http = require('http');
-const record = require("./records");
+const records = require("./records");
 
 
 const PORT = process.env.PORT || 4000;
 
 app.use(cors());
 
-app.use('/records', record);
+app.use('/records', records);
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');

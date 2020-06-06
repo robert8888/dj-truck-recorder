@@ -6,6 +6,12 @@ const { createPartialContentHandler, ContentDoesNotExistError } = require('expre
 const { connection: dbConnection } = require("./db/utils")
 const { Readable } = require('stream')
 
+
+router.use((req, res, next) => {
+  console.log(req)
+  next();
+})
+
 const recordFileProvider = async (req) => {
 
   const id = parseInt(req.params.id);
@@ -20,7 +26,7 @@ const recordFileProvider = async (req) => {
   }
 
   const totalSize = file.size;// - 8160 * 32;
-  console.log("total size is ", totalSize)
+ // console.log("total size is ", totalSize)
   const fileName = file.name;
 
   const bucket = new mongodb.GridFSBucket(db,
@@ -51,6 +57,7 @@ router.get("/:id", handler);
 
 
 router.delete('/:id', async (req, res) => {
+  console.log("in record delete route")
   const id = parseInt(req.params.id);
   const db = await dbConnection;
 

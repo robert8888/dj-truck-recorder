@@ -7,10 +7,6 @@ const { connection: dbConnection } = require("./db/utils")
 const { Readable } = require('stream')
 
 
-router.use((req, res, next) => {
-  console.log(req)
-  next();
-})
 
 const recordFileProvider = async (req) => {
 
@@ -57,7 +53,6 @@ router.get("/:id", handler);
 
 
 router.delete('/:id', async (req, res) => {
-  console.log("in record delete route")
   const id = parseInt(req.params.id);
   const db = await dbConnection;
 

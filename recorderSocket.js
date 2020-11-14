@@ -36,8 +36,7 @@ function create(server){
     io.on('connection', (socket) => {
     
       console.log("server : I have connection")
-    
-    
+
       const args = ['-i', 'pipe:0', '-b:a', '192k', '-c:a', 'libmp3lame', '-f', 'mp3', 'pipe:1']
     
       const ffmpeg_process = spawn('ffmpeg', args);
@@ -65,7 +64,7 @@ function create(server){
     
       socket.on('disconnect', e => {
         ffmpeg_process.kill('SIGINT')
-        console.log("socet closed && prcoess  SIGNINT");
+        console.log("socket closed && process  SIGNINT");
       })
 
       socket.on('record_stop', e => {
@@ -89,7 +88,7 @@ function create(server){
               socket.disconnect();
             })
             .on('finish', () => {
-              console.log('succes upload track to database. file size: ' + fileSize);
+              console.log('success upload track to database. file size: ' + fileSize);
 
               db.collection("records_metadata").insertOne({id: recId, name : recName, size: fileSize});
 

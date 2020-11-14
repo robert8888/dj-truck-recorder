@@ -6,7 +6,7 @@ const { createPartialContentHandler, ContentDoesNotExistError } = require('expre
 const { connection: dbConnection } = require("./db/utils")
 const { Readable } = require('stream')
 
-
+require("stream").dup
 
 const recordFileProvider = async (req) => {
 

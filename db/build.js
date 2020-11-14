@@ -7,7 +7,7 @@ connection.then( database => {
     let bucket = new mongodb.GridFSBucket(database, 
         { bucketName: 'dj-trucks-records-files' }
     )
-  //  console.log(bucket)
+    //console.log(bucket)
 }).catch(err => {
      console.log('MongoDB Error.' + JSON.stringify(err.message)) ;
      process.exit(1);
